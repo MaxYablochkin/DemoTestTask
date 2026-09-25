@@ -2,8 +2,6 @@
 
 package com.dev.maxyablochkin.demotaskapp.feature.categories.presentation.categories
 
-import android.R.attr.fontWeight
-import android.R.attr.text
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
@@ -77,8 +75,8 @@ fun CategoriesScreen(
     ) { innerPadding ->
         Column(
             modifier = Modifier
-                .padding(innerPadding)
                 .fillMaxSize()
+                .padding(innerPadding)
         ) {
             LazyRow(
                 modifier = Modifier
@@ -87,7 +85,7 @@ fun CategoriesScreen(
                 contentPadding = PaddingValues(horizontal = 16.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                items(items = NewsCategory.values()) { category ->
+                items(items = NewsCategory.entries.toTypedArray()) { category ->
                     FilterChip(
                         selected = category == state.selectedCategory,
                         onClick = { onAction(CategoriesAction.OnCategorySelected(category)) },

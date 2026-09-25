@@ -20,7 +20,7 @@ fun ArticleDto.toDomain(): Article {
 fun ArticleEntity.toDomain(): Article {
     return Article(
         id = url,
-        title = title.orEmpty(),
+        title = title,
         urlToImage = urlToImage.orEmpty(),
         source = Source(id = null, name = sourceName.orEmpty()),
         publishedAt = publishedAt.orEmpty(),

@@ -19,28 +19,22 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.input.clearText
-import androidx.compose.foundation.text.input.rememberTextFieldState
-import androidx.compose.material3.AppBarWithSearch
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberSearchBarState
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -51,8 +45,6 @@ import com.dev.maxyablochkin.demotaskapp.core.domain.model.Article
 import com.dev.maxyablochkin.demotaskapp.core.domain.model.Source
 import com.dev.maxyablochkin.demotaskapp.feature.home.presentation.mapper.toUiModel
 import com.dev.maxyablochkin.demotaskapp.feature.home.presentation.model.ArticleUiModel
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @Composable
 fun HomeScreen(
@@ -60,27 +52,7 @@ fun HomeScreen(
     onAction: (HomeAction) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val scrollBehavior = SearchBarDefaults.enterAlwaysSearchBarScrollBehavior()
     val listState = rememberLazyListState()
-    val searchBarState = rememberSearchBarState()
-    val scope = rememberCoroutineScope()
-
-    val textFieldState = rememberTextFieldState(initialText = homeState.searchQuery)
-
-    LaunchedEffect(textFieldState) {
-        snapshotFlow { textFieldState.text.toString() }
-            .collectLatest { query ->
-                if (query != homeState.searchQuery) {
-                    onAction(HomeAction.OnSearchQueryChanged(query))
-                }
-            }
-    }
-
-    LaunchedEffect(homeState.searchQuery) {
-        if (homeState.searchQuery.isEmpty() && textFieldState.text.isNotEmpty()) {
-            textFieldState.clearText()
-        }
-    }
 
     val shouldLoadMore = remember {
         derivedStateOf {
@@ -97,30 +69,10 @@ fun HomeScreen(
     }
 
     Scaffold(
-        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        modifier = modifier,
         topBar = {
-            AppBarWithSearch(
-                state = searchBarState,
-                scrollBehavior = scrollBehavior,
-                inputField = {
-                    SearchBarDefaults.InputField(
-                        textFieldState = textFieldState,
-                        searchBarState = searchBarState,
-                        onSearch = { scope.launch { searchBarState.animateToCollapsed() } },
-                        placeholder = { Text("Пошук новин...") },
-                        leadingIcon = { Text("🔍") },
-                        trailingIcon = {
-                            if (textFieldState.text.isNotEmpty()) {
-                                IconButton(onClick = {
-                                    textFieldState.clearText()
-                                    onAction(HomeAction.OnClearSearch)
-                                }) {
-                                    Text("❌")
-                                }
-                            }
-                        }
-                    )
-                }
+            TopAppBar(
+                title = { Text("Головна", fontWeight = FontWeight.Bold) }
             )
         }
     ) { innerPadding ->
@@ -129,6 +81,25 @@ fun HomeScreen(
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
+            OutlinedTextField(
+                value = homeState.searchQuery,
+                onValueChange = { onAction(HomeAction.OnSearchQueryChanged(it)) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                placeholder = { Text("Пошук новин...") },
+                leadingIcon = { Text("🔍") },
+                trailingIcon = {
+                    if (homeState.searchQuery.isNotEmpty()) {
+                        IconButton(onClick = { onAction(HomeAction.OnClearSearch) }) {
+                            Text("❌")
+                        }
+                    }
+                },
+                singleLine = true,
+                shape = RoundedCornerShape(24.dp)
+            )
+
             AnimatedVisibility(
                 visible = homeState.isLoading && homeState.articles.isEmpty(),
                 enter = expandVertically(),

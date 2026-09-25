@@ -2,13 +2,13 @@ package com.dev.maxyablochkin.demotaskapp.feature.categories.presentation.catego
 
 import androidx.lifecycle.viewModelScope
 import com.dev.maxyablochkin.demotaskapp.core.domain.model.NewsCategory
-import com.dev.maxyablochkin.demotaskapp.core.domain.repository.NewsArticleRepository
+import com.dev.maxyablochkin.demotaskapp.core.domain.usecase.GetCategoryNewsUseCase
 import com.dev.maxyablochkin.demotaskapp.core.presentation.BaseViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class CategoriesViewModel(
-    private val repository: NewsArticleRepository
+    private val getCategoryNewsUseCase: GetCategoryNewsUseCase
 ) : BaseViewModel<CategoriesState, CategoriesAction, CategoriesNavEvent, Nothing>(
     initialState = CategoriesState()
 ) {
@@ -48,7 +48,7 @@ class CategoriesViewModel(
     private fun observeCategoryFeed(category: NewsCategory) {
         feedObserveJob?.cancel()
         feedObserveJob = viewModelScope.launch {
-            repository.getArticlesByCategoryFlow(category.apiName).collect { list ->
+            getCategoryNewsUseCase.getArticlesFlow(category).collect { list ->
                 updateState { copy(articles = list) }
             }
         }
@@ -64,7 +64,7 @@ class CategoriesViewModel(
         viewModelScope.launch {
             updateState { copy(isLoading = true) }
 
-            val result = repository.fetchCategoryNews(category.apiName, page = page)
+            val result = getCategoryNewsUseCase.fetchCategoryNews(category = category, page = page)
 
             updateState {
                 val fetchedCount = result.getOrDefault(0)

@@ -1,7 +1,6 @@
 package com.dev.maxyablochkin.demotaskapp.core.network
 
 import com.dev.maxyablochkin.demotaskapp.core.network.dto.NewsDto
-import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 

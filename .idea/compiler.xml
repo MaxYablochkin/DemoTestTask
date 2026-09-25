@@ -5,6 +5,7 @@
       <module name="DemoTaskApp.core.model" target="17" />
       <module name="DemoTaskApp.core.model.main" target="17" />
       <module name="DemoTaskApp.core.model.test" target="17" />
+      <module name="DemoTaskApp.core.paging" target="21" />
       <module name="DemoTaskApp.feature.categories.data" target="21" />
     </bytecodeTargetLevel>
   </component>

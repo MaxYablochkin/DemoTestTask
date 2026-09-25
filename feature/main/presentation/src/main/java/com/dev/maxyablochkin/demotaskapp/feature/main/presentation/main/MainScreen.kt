@@ -1,5 +1,6 @@
 package com.dev.maxyablochkin.demotaskapp.feature.main.presentation.main
 
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -57,7 +58,9 @@ internal fun MainScreen(
         }
     ) { contentPadding ->
         BottomTabNavHost(
-            modifier = Modifier.padding(contentPadding),
+            modifier = Modifier
+                .padding(contentPadding)
+                .consumeWindowInsets(contentPadding),
             navController = bottomTabNavController,
             startDestination = HomeGraph,
             navGraphBuilder = tabGraphs

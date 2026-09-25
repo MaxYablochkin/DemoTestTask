@@ -4,17 +4,14 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
 import com.dev.maxyablochkin.demotaskapp.core.data.mapper.toDomain
-import com.dev.maxyablochkin.demotaskapp.core.data.mapper.toEntity
 import com.dev.maxyablochkin.demotaskapp.core.database.dao.ArticleDao
 import com.dev.maxyablochkin.demotaskapp.core.database.entity.ArticleEntity
 import com.dev.maxyablochkin.demotaskapp.core.domain.model.Article
 import com.dev.maxyablochkin.demotaskapp.core.domain.repository.NewsArticleRepository
 import com.dev.maxyablochkin.demotaskapp.core.network.NewsApiService
 import com.dev.maxyablochkin.demotaskapp.core.network.dto.ArticleDto
-import com.dev.maxyablochkin.demotaskapp.core.network.util.SafeRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import kotlin.collections.isNotEmpty

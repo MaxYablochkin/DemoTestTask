@@ -44,6 +44,6 @@ internal fun ArticleEntity.toDomain(): Article {
         ),
         publishedAt = publishedAt.orEmpty(),
         content = content.orEmpty(),
-        url = url.orEmpty()
+        url = url
     )
 }

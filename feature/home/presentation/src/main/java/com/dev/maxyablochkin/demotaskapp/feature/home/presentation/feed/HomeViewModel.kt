@@ -1,14 +1,16 @@
 package com.dev.maxyablochkin.demotaskapp.feature.home.presentation.feed
 
 import androidx.lifecycle.viewModelScope
-import com.dev.maxyablochkin.demotaskapp.core.domain.repository.NewsArticleRepository
+import com.dev.maxyablochkin.demotaskapp.core.domain.usecase.GetHomeNewsUseCase
+import com.dev.maxyablochkin.demotaskapp.core.domain.usecase.SearchNewsUseCase
 import com.dev.maxyablochkin.demotaskapp.core.presentation.BaseViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
-    private val repository: NewsArticleRepository
+    private val getHomeNewsUseCase: GetHomeNewsUseCase,
+    private val searchNewsUseCase: SearchNewsUseCase
 ) : BaseViewModel<HomeState, HomeAction, Nothing, Nothing>(
     initialState = HomeState()
 ) {
@@ -31,7 +33,7 @@ class HomeViewModel(
 
     private fun observeGeneralFeed() {
         viewModelScope.launch {
-            repository.getArticlesByCategoryFlow("general").collect { list ->
+            getHomeNewsUseCase.getArticlesFlow().collect { list ->
                 updateState { copy(articles = list) }
             }
         }
@@ -48,14 +50,14 @@ class HomeViewModel(
 
         searchJob = viewModelScope.launch {
             launch {
-                repository.searchLocalArticlesFlow(query).collect { localList ->
+                searchNewsUseCase.searchLocalArticlesFlow(query).collect { localList ->
                     updateState { copy(searchResults = localList) }
                 }
             }
 
             delay(600)
             if (query.length >= 3) {
-                repository.searchNews(query = query, page = 1)
+                searchNewsUseCase.searchNews(query = query, page = 1)
             }
         }
     }
@@ -79,7 +81,7 @@ class HomeViewModel(
         viewModelScope.launch {
             updateState { copy(isLoading = true) }
 
-            val result = repository.fetchCategoryNews("general", page = page, isRefresh = isRefresh)
+            val result = getHomeNewsUseCase.fetchHomeNews(page = page, isRefresh = isRefresh)
 
             updateState {
                 val fetchedCount = result.getOrDefault(0)

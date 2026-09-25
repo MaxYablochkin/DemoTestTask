@@ -48,7 +48,6 @@ dependencies {
     implementation(projects.core.domain)
     implementation(projects.core.navigation)
     implementation(projects.core.network)
-    implementation(projects.core.paging)
     implementation(projects.core.presentation)
 
     implementation(projects.feature.main.api)
@@ -74,17 +73,9 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
-    // Compose ViewModel & Navigation
-    implementation(libs.androidx.lifecycle.viewmodel.compose)
-    implementation(libs.androidx.navigation.compose)
-
     // Koin
     implementation(platform(libs.koin.bom))
     implementation(libs.koin.androidx.compose)
-
-    // Room
-    implementation(libs.androidx.room.runtime)
-    //ksp(libs.androidx.room.compiler)
 
     // Serialization
     implementation(libs.kotlinx.serialization.json)

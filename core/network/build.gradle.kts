@@ -27,7 +27,6 @@ dependencies {
     ksp(libs.moshi.codegen)
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.converter.moshi)
-    implementation(libs.retrofit2.converter.gson)
     implementation(libs.kotlinx.serialization.json)
     implementation(platform(libs.koin.bom))
     implementation(libs.koin.core)

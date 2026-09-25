@@ -5,7 +5,6 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.rememberNavController
@@ -14,12 +13,13 @@ import com.dev.maxyablochkin.demotaskapp.core.presentation.LocalSnackbarHostStat
 import com.dev.maxyablochkin.demotaskapp.core.presentation.collectAsNavEventWithLifecycle
 import com.dev.maxyablochkin.demotaskapp.feature.categories.api.CategoriesGraph
 import com.dev.maxyablochkin.demotaskapp.feature.home.api.HomeGraph
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MainRoot(
     modifier: Modifier = Modifier,
     tabGraphs: NavGraphBuilder.() -> Unit,
-    viewModel: MainViewModel = viewModel(),
+    viewModel: MainViewModel = koinViewModel(),
 ) {
     val bottomTabNavController = rememberNavController()
     val snackbarHostState = LocalSnackbarHostState.current

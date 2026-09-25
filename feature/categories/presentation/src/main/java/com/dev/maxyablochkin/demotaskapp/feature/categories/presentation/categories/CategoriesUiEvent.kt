@@ -1,0 +1,3 @@
+package com.dev.maxyablochkin.demotaskapp.feature.categories.presentation.categories
+
+sealed interface CategoriesUiEvent

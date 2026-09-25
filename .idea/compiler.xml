@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel target="17">
+      <module name="DemoTaskApp.core.model" target="17" />
+      <module name="DemoTaskApp.core.model.main" target="17" />
+      <module name="DemoTaskApp.core.model.test" target="17" />
+      <module name="DemoTaskApp.feature.categories.data" target="21" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
